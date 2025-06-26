@@ -7,5 +7,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./database/postgres-data:/var/lib/postgresql/data:rw
+      - postgres-data:/var/lib/postgresql/data:rw
     restart: unless-stopped
+
+volumes:
+  postgres-data:
+    driver: local
