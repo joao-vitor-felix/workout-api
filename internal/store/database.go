@@ -13,9 +13,6 @@ import (
 
 func OpenPool() (*pgxpool.Pool, error) {
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
-
-	fmt.Printf("Connecting to database at %s\n", os.Getenv("DATABASE_URL"))
-
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
