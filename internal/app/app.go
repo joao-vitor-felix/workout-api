@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jackc/pgx/v5/stdlib"
 	"github.com/joao-vitor-felix/workout-api/internal/api"
 	"github.com/joao-vitor-felix/workout-api/internal/store"
 	"github.com/joao-vitor-felix/workout-api/migrations"
@@ -28,7 +29,8 @@ func NewApplication() (*Application, error) {
 	}
 
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
-	workoutHandler := api.NewWorkoutHandler()
+	workoutStore := store.NewPostgresWorkoutStore(stdlib.OpenDBFromPool(dbPool))
+	workoutHandler := api.NewWorkoutHandler(workoutStore)
 	app := &Application{
 		Logger:         logger,
 		WorkoutHandler: workoutHandler,
