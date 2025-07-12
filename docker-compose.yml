@@ -10,6 +10,15 @@ services:
       - postgres-data:/var/lib/postgresql/data:rw
     restart: unless-stopped
 
+  test_db:
+    container_name: workout_db_test
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+
 volumes:
   postgres-data:
     driver: local
