@@ -23,7 +23,9 @@ func NewApplication() (*Application, error) {
 		return nil, err
 	}
 
-	err = store.MigrateFS(dbPool, migrations.FS, ".")
+	db := stdlib.OpenDBFromPool(dbPool)
+	defer db.Close()
+	err = store.MigrateFS(db, migrations.FS, ".")
 	if err != nil {
 		panic(err)
 	}

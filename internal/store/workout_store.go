@@ -23,6 +23,7 @@ type WorkoutEntry struct {
 }
 
 type PostgresWorkoutStore struct {
+	// TODO: refactor to use received db pool
 	db *sql.DB
 }
 
