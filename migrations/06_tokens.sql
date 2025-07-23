@@ -1,0 +1,11 @@
+-- +goose Up
+CREATE TABLE IF NOT EXISTS tokens (
+  hash BYTEA PRIMARY KEY,
+  user_id BIGSERIAL NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  expires_at TIMESTAMP NOT NULL,
+  scope TEXT NOT NULL
+);
+
+--+goose Down
+DROP TABLE IF EXISTS tokens;
