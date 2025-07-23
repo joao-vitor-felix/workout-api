@@ -41,6 +41,13 @@ func (wh *WorkoutHandler) GetById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if workout == nil {
+		utils.WriteJSON(w, http.StatusNotFound, utils.Envelope{
+			"error": "not found",
+		})
+		return
+	}
+
 	utils.WriteJSON(w, http.StatusOK, utils.Envelope{
 		"data": workout,
 	})
