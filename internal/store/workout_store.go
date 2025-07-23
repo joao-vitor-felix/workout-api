@@ -135,7 +135,6 @@ func (pg *PostgresWorkoutStore) Update(workout *Workout) error {
   UPDATE workouts
   SET title = $1, description = $2, duration_minutes = $3, calories_burned = $4
   WHERE id = $5
-  RETURNING id, title, description, duration_minutes, calories_burned
   `
 	result, err := tx.Exec(query, workout.Title, workout.Description, workout.DurationMinutes, workout.CaloriesBurned, workout.ID)
 	if err != nil {
@@ -161,7 +160,6 @@ func (pg *PostgresWorkoutStore) Update(workout *Workout) error {
 		query := `
       INSERT INTO workout_entries (workout_id, exercise_name, sets, reps, duration_seconds, weight, notes, order_index)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-      RETURNING id, exercise_name, sets, reps, duration_seconds, weight, notes, order_index
     `
 		_, err := tx.Exec(query, workout.ID, entry.ExerciseName, entry.Sets, entry.Reps, entry.DurationSeconds, entry.Weight, entry.Notes, entry.OrderIndex)
 
