@@ -7,6 +7,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jackc/pgx/v5/stdlib"
 	"github.com/joao-vitor-felix/workout-api/internal/api"
+	"github.com/joao-vitor-felix/workout-api/internal/middleware"
 	"github.com/joao-vitor-felix/workout-api/internal/store"
 	"github.com/joao-vitor-felix/workout-api/migrations"
 )
@@ -16,6 +17,7 @@ type Application struct {
 	WorkoutHandler *api.WorkoutHandler
 	UserHandler    *api.UserHandler
 	TokenHandler   *api.TokenHandler
+	Middleware     middleware.UserMiddleware
 	DBPool         *pgxpool.Pool
 }
 
@@ -38,11 +40,13 @@ func NewApplication() (*Application, error) {
 	userHandler := api.NewUserHandler(userStore, logger)
 	tokenStore := store.NewPostgresTokenStore(stdlib.OpenDBFromPool(dbPool))
 	tokenHandler := api.NewTokenHandler(tokenStore, userStore, logger)
+	middlewareHandler := middleware.UserMiddleware{UserStore: userStore}
 	app := &Application{
 		Logger:         logger,
 		WorkoutHandler: workoutHandler,
 		UserHandler:    userHandler,
 		TokenHandler:   tokenHandler,
+		Middleware:     middlewareHandler,
 		DBPool:         dbPool,
 	}
 	return app, nil
